@@ -1,2 +1,3 @@
-# ppl-lexer
-Lexical Analyzer for PPL Project
+# dServe: The Language You Deserve
+
+*This language is currently underway*
