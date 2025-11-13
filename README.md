@@ -1,3 +1,3 @@
-# dServe: The Language You Deserve
+# DSArv: The Language You Truly DSArv
 
 *This language is currently underway*
