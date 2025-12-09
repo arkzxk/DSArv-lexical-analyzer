@@ -102,6 +102,8 @@ TT_RESERVED   = 'RESERVED'
 
 TT_LPAREN     = 'LPAREN'
 TT_RPAREN     = 'RPAREN'
+TT_LBRACKET   = 'LBRACKET'
+TT_RBRACKET   = 'RBRACKET'
 TT_COMMA      = 'COMMA'
 TT_COLON      = 'COLON'
 TT_STRING     = 'STRING'
@@ -115,7 +117,7 @@ class Token:
 
     def __repr__(self):
         if self.value is not None:
-            return f'{self.type}:{self.value}'
+            return f'{self.type}: {self.value}'
         return f'{self.type}'
 
 ####################################
@@ -149,7 +151,7 @@ KEYWORDS = {
     # OOP
     'class','interface','extends','implements','public','private','protected','static','new','this',
 
-    # data structure names and built-ins (page 11)
+    # data structure names and built-ins
     'linkedList','tree','graph','stack','queue','heap',
     'insert','append','remove','push','pop','peek',
     'addNode','addEdge','dfs','bfs','enqueue','dequeue',
@@ -194,6 +196,12 @@ class Lexer:
             # whitespace (spaces and tabs)
             if self.current_char in ' \t':
                 self.advance()
+            
+            # square brackets
+            elif self.current_char == '[':
+                tokens.append(Token(TT_LBRACKET)); self.advance()
+            elif self.current_char == ']':
+                tokens.append(Token(TT_RBRACKET)); self.advance()
 
             # comments (# ... newline)
             elif self.current_char == '#':
@@ -451,23 +459,23 @@ def run(fn, text):
 # QUICK TEST (optional)
 ####################################
 
-# if __name__ == '__main__':
-#     sample = '''
-#     # sample DSArv snippet
-#     stack clothes
-#     clothes.push("Bench")
-#     clothes.push('Penshoppe')
-#     print(clothes.peek())
-#     jabee = queue
-#     jabee.enqueue("Frances")
-#     jabee.enqueue("Cherry")
-#     jabee.dequeue()
-#     x = 3.14
-#     a += 2
-#     if a == 5:
-#         print("ok")
-#     '''
-#     toks, err = run('<stdin>', sample)
-#     print(toks)
-#     if err:
-#         print(err.as_string())
+if __name__ == '__main__':
+    sample = '''
+    graph web
+    web.addNode("A")
+    web.addNode("B")
+    web.addNode("C")
+    web.addEdge("A", "B")
+    web.addEdge("B", "C")
+    print("BFS from node A:", web.bfs("A"))
+    
+    # Output:
+    # BFS from node A: A –> B –> C
+    '''
+    toks, err = run('<stdin>', sample)
+
+    if err:
+        print(err.as_string())
+    else:
+        for tok in toks:
+            print(tok)
